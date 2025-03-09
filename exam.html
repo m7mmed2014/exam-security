@@ -36,37 +36,37 @@
     <style>
         /* ✅ تحسينات التصميم العامة */
         body {
-            text-align: center;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f7f9;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
         .container {
             background: white;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             animation: fadeIn 1s ease-in-out;
         }
 
         h2 {
             color: #007bff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 22px;
         }
 
         p {
             font-size: 18px;
-            color: #333;
+            color: #555;
         }
 
         /* ✅ تحسين تصميم الزر */
@@ -77,14 +77,16 @@
             padding: 12px 25px;
             font-size: 20px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s ease;
+            border-radius: 8px;
+            transition: all 0.3s ease;
             margin-top: 15px;
+            font-weight: bold;
         }
 
         .exam-btn:hover {
             background-color: #0056b3;
             transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
         }
 
         /* ✅ تصميم الفوتر */
@@ -97,6 +99,7 @@
             text-align: center;
             padding: 15px 0;
             font-size: 16px;
+            font-weight: bold;
         }
 
         /* ✅ تأثير الدخول */
@@ -108,6 +111,20 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        /* ✅ تحسينات للأجهزة الصغيرة */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            .exam-btn {
+                font-size: 18px;
             }
         }
     </style>
@@ -122,7 +139,7 @@
 
     <!-- ✅ إضافة الفوتر هنا -->
     <div class="footer">
-        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2024
+        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2025
     </div>
 </body>
 </html>
