@@ -7,6 +7,7 @@
 
     <script>
         let exitAttempts = 0;
+        let examStarted = false;
 
         // 🔹 تعطيل النسخ واللصق والنقر بزر الفأرة الأيمن
         document.addEventListener("contextmenu", function(e) {
@@ -22,15 +23,52 @@
             }
         });
 
-        // 📌 فتح نموذج الامتحان في نافذة منبثقة
-        function openExamWindow() {
-            var examUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfuGh27kXroGvq1tIDM7TLEudVz3c0Lwp1z3nfG1BGMONXpoA/viewform";
-            var examWindow = window.open(examUrl, "_blank", "width=800,height=600");
-
-            if (!examWindow) {
-                alert("⚠️ يرجى السماح بفتح النوافذ المنبثقة لعرض الامتحان!");
+        // 📌 فتح الامتحان في نفس النافذة مع التنبيه
+        function startExam() {
+            if (confirm("⚠️ تنبيه: عند بدء الامتحان لا يمكنك الرجوع أو فتح نوافذ أخرى! هل أنت مستعد؟")) {
+                examStarted = true;
+                window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfuGh27kXroGvq1tIDM7TLEudVz3c0Lwp1z3nfG1BGMONXpoA/viewform";
+                startExamTimer();
             }
         }
+
+        // 📌 إغلاق الصفحة تلقائيًا بعد دقيقة واحدة
+        function startExamTimer() {
+            setTimeout(function() {
+                alert("⏳ انتهى الوقت! سيتم إغلاق الصفحة الآن.");
+                window.close();
+            }, 60 * 1000); // 60 ثانية = 1 دقيقة
+        }
+
+        // 📌 تحذير عند محاولة الخروج من الصفحة
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden && examStarted) {
+                exitAttempts++;
+                if (exitAttempts < 3) {
+                    alert("❌ تحذير: هذه هي المحاولة " + exitAttempts + " للخروج من الصفحة. في المحاولة الثالثة سيتم إغلاق الامتحان!");
+                } else {
+                    alert("❌ لقد حاولت الخروج 3 مرات! سيتم إغلاق الامتحان الآن.");
+                    window.close();
+                }
+            }
+        });
+
+        // 📌 إغلاق الامتحان إذا قام الطالب بتغيير حجم النافذة
+        window.addEventListener('resize', function() {
+            if (window.outerWidth < 600 || window.outerHeight < 400) {
+                alert("❌ لا يمكنك تغيير حجم النافذة أثناء الامتحان! سيتم إغلاق الصفحة.");
+                window.close();
+            }
+        });
+
+        // 📌 منع التصغير (Minimize)
+        window.addEventListener("blur", function() {
+            if (document.visibilityState === "hidden") {
+                alert("❌ لا يمكنك تصغير المتصفح أثناء الامتحان! سيتم إغلاق الصفحة.");
+                window.close();
+            }
+        });
+
     </script>
 
     <style>
@@ -45,6 +83,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            text-align: center;
         }
 
         .container {
@@ -133,13 +172,13 @@
 <body>
     <div class="container">
         <h2>📚 امتحان محمي - يُرجى عدم الغش</h2>
-        <p>✅ سيتم فتح الامتحان في نافذة جديدة. إذا لم يُفتح، اضغط على الزر أدناه:</p>
-        <button class="exam-btn" onclick="openExamWindow()">📝 بدء الامتحان</button>
+        <p>✅ عند بدء الامتحان لا يمكنك الرجوع أو تغيير الصفحة.</p>
+        <button class="exam-btn" onclick="startExam()">📝 بدء الامتحان</button>
     </div>
 
     <!-- ✅ إضافة الفوتر هنا -->
     <div class="footer">
-        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2025
+        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2024
     </div>
 </body>
 </html>
