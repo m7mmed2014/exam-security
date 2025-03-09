@@ -7,7 +7,6 @@
 
     <script>
         let exitAttempts = 0; // عدد محاولات الخروج
-        let allowedIP = null; // لتخزين الـ IP الأول الذي دخل منه الطالب
 
         // 🔹 تعطيل النسخ واللصق والنقر بزر الفأرة الأيمن
         document.addEventListener("contextmenu", function(e) {
@@ -23,76 +22,15 @@
             }
         });
 
-        // 📌 إغلاق الصفحة تلقائيًا بعد دقيقة واحدة (60 ثانية)
-        setTimeout(function() {
-            alert("⏳ انتهى الوقت! سيتم إغلاق الصفحة الآن.");
-            window.close();
-        }, 60 * 1000); // 60 ثانية = 1 دقيقة
-
-        // 📌 التحقق من عنوان الـ IP ومنع الفتح أكثر من مرة من نفس الشبكة
-        function getIPAddress() {
-            fetch("https://api64.ipify.org?format=json")
-            .then(response => response.json())
-            .then(data => {
-                let currentIP = data.ip;
-                console.log("📌 عنوان IP الخاص بك:", currentIP);
-
-                if (allowedIP === null) {
-                    allowedIP = currentIP; // حفظ الـ IP الأول
-                    localStorage.setItem("examAllowedIP", allowedIP);
-                } else if (currentIP !== allowedIP) {
-                    alert("❌ لا يمكنك فتح الامتحان من أكثر من جهاز بنفس الـ IP!");
-                    window.close();
-                }
-            })
-            .catch(error => {
-                console.error("❌ خطأ في جلب عنوان IP:", error);
-            });
-        }
-
         // 📌 فتح نموذج الامتحان في نافذة منبثقة
         function openExamWindow() {
-            getIPAddress(); // جلب الـ IP أولاً
-
-            var examUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfuGh27kXroGvq1tIDM7TLEudVz3c0Lwp1z3nfG1BGMONXpoA/viewform"; // رابط Google Form مباشر
+            var examUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfuGh27kXroGvq1tIDM7TLEudVz3c0Lwp1z3nfG1BGMONXpoA/viewform";
             var examWindow = window.open(examUrl, "_blank", "width=800,height=600");
 
             if (!examWindow) {
                 alert("⚠️ يرجى السماح بفتح النوافذ المنبثقة لعرض الامتحان!");
             }
         }
-
-        // 📌 تحذير عند محاولة الخروج من الصفحة (المرة الثالثة تُغلق الصفحة)
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                exitAttempts++; // زيادة عدد المحاولات
-                
-                if (exitAttempts < 3) {
-                    alert("❌ تحذير: هذه هي المحاولة " + exitAttempts + " للخروج من الصفحة. في المحاولة الثالثة سيتم إغلاق الامتحان!");
-                } else {
-                    alert("❌ لقد حاولت الخروج 3 مرات! سيتم إغلاق الامتحان الآن.");
-                    window.close();
-                }
-            }
-        });
-
-        // 📌 إغلاق الامتحان إذا حاول الطالب تصغير النافذة أو تغيير حجمها
-        window.addEventListener('resize', function() {
-            if (window.outerWidth < 600 || window.outerHeight < 400) {
-                alert("❌ لا يُسمح بتغيير حجم النافذة أثناء الامتحان! سيتم إغلاق الامتحان الآن.");
-                window.close();
-            }
-        });
-
-        // 📌 إغلاق الامتحان إذا قام الطالب بعمل Minimize (تصغير المتصفح)
-        let isMinimized = false;
-        window.addEventListener("blur", function() {
-            if (document.visibilityState === "hidden") {
-                isMinimized = true;
-                alert("❌ لا يمكنك تصغير المتصفح أثناء الامتحان! سيتم إغلاق الامتحان.");
-                window.close();
-            }
-        });
 
     </script>
 
@@ -101,8 +39,18 @@
             text-align: center;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            margin: 50px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
         button {
             background-color: #007bff;
             color: white;
@@ -116,32 +64,31 @@
             background-color: #0056b3;
         }
 
-        /* ✅ تصميم الفوتر */
+        /* ✅ تصميم الفوتر بحيث يظهر دائمًا */
         .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
             background-color: #343a40;
             color: white;
             text-align: center;
-            padding: 10px 0;
+            padding: 15px 0;
             font-size: 16px;
+            width: 100%;
         }
     </style>
 </head>
 <body onload="openExamWindow()">
-    <h2>📚 امتحان محمي - يُرجى عدم الغش</h2>
-    
-    <p>✅ سيتم فتح الامتحان في نافذة جديدة. إذا لم يُفتح، اضغط على الزر أدناه:</p>
-    <button onclick="openExamWindow()">📝 فتح الامتحان</button>
+    <div class="content">
+        <h2>📚 امتحان محمي - يُرجى عدم الغش</h2>
+        
+        <p>✅ سيتم فتح الامتحان في نافذة جديدة. إذا لم يُفتح، اضغط على الزر أدناه:</p>
+        <button onclick="openExamWindow()">📝 فتح الامتحان</button>
 
-    <p>⚠️ ملاحظات:</p>
-    <ul>
-        <li>❌ لا يمكن النسخ أو اللصق أثناء الامتحان.</li>
-        <li>❌ سيتم تحذيرك مرتين إذا حاولت الخروج، وفي المرة الثالثة سيتم **إغلاق الامتحان!**</li>
-        <li>⏳ سيتم إغلاق الصفحة تلقائيًا بعد **دقيقة واحدة**.</li>
-        <li>🔒 لا يمكن فتح الامتحان أكثر من مرة بنفس الـ IP.</li>
-    </ul>
+        <p>⚠️ ملاحظات:</p>
+        <ul>
+            <li>❌ لا يمكن النسخ أو اللصق أثناء الامتحان.</li>
+            <li>❌ سيتم تحذيرك مرتين إذا حاولت الخروج، وفي المرة الثالثة سيتم **إغلاق الامتحان!**</li>
+            <li>⏳ سيتم إغلاق الصفحة تلقائيًا بعد **دقيقة واحدة**.</li>
+        </ul>
+    </div>
 
     <!-- ✅ إضافة الفوتر هنا -->
     <div class="footer">
