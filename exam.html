@@ -43,15 +43,14 @@
             }
         });
 
-        // 📌 إغلاق الامتحان إذا قام الطالب بتغيير حجم النافذة
-        window.addEventListener('resize', function() {
+        // 📌 منع تغيير حجم النافذة أو التصغير (Minimize)
+        window.addEventListener("resize", function() {
             if (window.outerWidth < 600 || window.outerHeight < 400) {
                 alert("❌ لا يمكنك تغيير حجم النافذة أثناء الامتحان! سيتم إغلاق الصفحة.");
                 window.close();
             }
         });
 
-        // 📌 منع التصغير (Minimize)
         window.addEventListener("blur", function() {
             if (document.visibilityState === "hidden") {
                 alert("❌ لا يمكنك تصغير المتصفح أثناء الامتحان! سيتم إغلاق الصفحة.");
@@ -100,7 +99,7 @@
         /* ✅ تحسين تصميم الإطار الخاص بالامتحان */
         .exam-frame {
             width: 100%;
-            height: 500px;
+            height: 600px;
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -129,17 +128,6 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-
-        /* ✅ تحسينات للأجهزة الصغيرة */
-        @media (max-width: 600px) {
-            .container {
-                width: 95%;
-                padding: 20px;
-            }
-            h2 {
-                font-size: 20px;
             }
         }
     </style>
