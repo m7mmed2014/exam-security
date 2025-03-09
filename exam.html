@@ -7,7 +7,6 @@
 
     <script>
         let exitAttempts = 0; // عدد محاولات الخروج
-        let allowedIP = null; // لتخزين الـ IP الأول الذي دخل منه الطالب
 
         // 🔹 تعطيل النسخ واللصق والنقر بزر الفأرة الأيمن
         document.addEventListener("contextmenu", function(e) {
@@ -29,38 +28,9 @@
             window.close();
         }, 60 * 1000); // 60 ثانية = 1 دقيقة
 
-        // 📌 جلب الـ IP ومنع الفتح أكثر من مرة من نفس الـ IP
-        function getIPAddress() {
-            fetch("https://api64.ipify.org?format=json")
-            .then(response => response.json())
-            .then(data => {
-                let currentIP = data.ip;
-                console.log("📌 عنوان IP الخاص بك:", currentIP);
-
-                if (allowedIP === null) {
-                    allowedIP = currentIP; // حفظ الـ IP الأول
-                    localStorage.setItem("examAllowedIP", allowedIP);
-                } else if (currentIP !== allowedIP) {
-                    alert("❌ لا يمكنك فتح الامتحان من أكثر من جهاز بنفس الـ IP!");
-                    window.close();
-                }
-            })
-            .catch(error => {
-                console.error("❌ خطأ في جلب عنوان IP:", error);
-            });
-        }
-
-        // 📌 إخفاء رابط Google Form واستخدام متغير مشفر
-        function getExamURL() {
-            let encodedURL = "aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vZm9ybXMvZC8xRkFJcFFMU2Z1R2gyN2tYcm9HdnExdElETTdUTEV1ZFZ6M2MwTHdwMXozbmZHMUJHTU9OWHBvQQ=="; // 🔹 رابط الفورم مشفر بـ Base64
-            return atob(encodedURL); // فك تشفير Base64
-        }
-
-        // 📌 فتح نموذج الامتحان في نافذة منبثقة مع إخفاء الرابط
+        // 📌 فتح نموذج الامتحان في نافذة منبثقة (بدون تشفير للرابط)
         function openExamWindow() {
-            getIPAddress(); // جلب الـ IP أولاً
-
-            var examUrl = getExamURL(); // 🔹 جلب الرابط المخفي
+            var examUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfuGh27kXroGvq1tIDM7TLEudVz3c0Lwp1z3nfG1BGMONXpoA/viewform"; // 🔹 رابط Google Form مباشر
             var examWindow = window.open(examUrl, "_blank", "width=800,height=600");
 
             if (!examWindow) {
@@ -136,7 +106,6 @@
         <li>⏳ سيتم إغلاق الصفحة تلقائيًا بعد **دقيقة واحدة**.</li>
         <li>❌ سيتم إغلاق الصفحة إذا حاولت تغيير حجم النافذة.</li>
         <li>❌ سيتم إغلاق الصفحة إذا حاولت تصغير المتصفح (Minimize).</li>
-        <li>🔒 لا يمكن فتح الامتحان أكثر من مرة بنفس الـ IP.</li>
     </ul>
 </body>
 </html>
