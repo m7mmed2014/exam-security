@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان محمي</title>
+    <title>امتحان محمي - محمد مبروك</title>
 
     <script>
-        let exitAttempts = 0; // عدد محاولات الخروج
+        let exitAttempts = 0;
 
         // 🔹 تعطيل النسخ واللصق والنقر بزر الفأرة الأيمن
         document.addEventListener("contextmenu", function(e) {
@@ -31,69 +31,98 @@
                 alert("⚠️ يرجى السماح بفتح النوافذ المنبثقة لعرض الامتحان!");
             }
         }
-
     </script>
 
     <style>
+        /* ✅ تحسينات التصميم العامة */
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f7f9;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
 
-        .content {
-            flex: 1;
-            padding: 20px;
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 1s ease-in-out;
         }
 
-        button {
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* ✅ تحسين تصميم الزر */
+        .exam-btn {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 12px 25px;
+            font-size: 20px;
             cursor: pointer;
             border-radius: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
+            transition: 0.3s ease;
+            margin-top: 15px;
         }
 
-        /* ✅ تصميم الفوتر بحيث يظهر دائمًا */
+        .exam-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* ✅ تصميم الفوتر */
         .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             background-color: #343a40;
             color: white;
             text-align: center;
             padding: 15px 0;
             font-size: 16px;
-            width: 100%;
+        }
+
+        /* ✅ تأثير الدخول */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
-</head>
-<body onload="openExamWindow()">
-    <div class="content">
-        <h2>📚 امتحان محمي - يُرجى عدم الغش</h2>
-        
-        <p>✅ سيتم فتح الامتحان في نافذة جديدة. إذا لم يُفتح، اضغط على الزر أدناه:</p>
-        <button onclick="openExamWindow()">📝 فتح الامتحان</button>
 
-        <p>⚠️ ملاحظات:</p>
-        <ul>
-            <li>❌ لا يمكن النسخ أو اللصق أثناء الامتحان.</li>
-            <li>❌ سيتم تحذيرك مرتين إذا حاولت الخروج، وفي المرة الثالثة سيتم **إغلاق الامتحان!**</li>
-            <li>⏳ سيتم إغلاق الصفحة تلقائيًا بعد **دقيقة واحدة**.</li>
-        </ul>
+</head>
+<body>
+    <div class="container">
+        <h2>📚 امتحان محمي - يُرجى عدم الغش</h2>
+        <p>✅ سيتم فتح الامتحان في نافذة جديدة. إذا لم يُفتح، اضغط على الزر أدناه:</p>
+        <button class="exam-btn" onclick="openExamWindow()">📝 بدء الامتحان</button>
     </div>
 
     <!-- ✅ إضافة الفوتر هنا -->
     <div class="footer">
-        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2025
+        تم عمل الصفحة بواسطة <b>محمد مبروك</b> © 2024
     </div>
-
 </body>
 </html>
